@@ -46,8 +46,8 @@ def numeralize(num)
   result
 end
 
-puts 'This program displays numbers as old-school Roman numerals.'
+puts 'This program displays numbers as subtractive Roman numerals.'
 print 'Enter a number: '
 num = gets.to_i
 
-puts "#{ num } in New Roman numerals is #{ numeralize(num) }."
+puts "#{ num } in new Roman numerals is #{ numeralize(num) }."
