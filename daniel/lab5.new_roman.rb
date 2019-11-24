@@ -12,7 +12,7 @@
 NUMERALS = %w[M D C L X V I].freeze
 VALUES = [1_000, 500, 100, 50, 10, 5, 1].freeze
 
-def one_under(index, prefix, next_chunk, num, result)
+def add_a_numeral(index, prefix, next_chunk, num, result)
   while num >= next_chunk
     num -= next_chunk
     result += prefix + NUMERALS[index]
@@ -24,23 +24,28 @@ def a_five?(value)
   value.to_s.start_with?('5')
 end
 
+def subtractive_numerals(value, index)
+  if a_five?(value)
+    next_one = index + 1
+    factor = 4
+  else
+    next_one = index + 2
+    factor = 9
+  end
+  [NUMERALS[next_one], VALUES[next_one] * factor]
+end
+
 # Displays zero or more Roman numerals that fit into a number.
 # Returns the remainder.
 def numeralize(num)
   result = ''
 
   VALUES.each_with_index do |value, index|
-    num, result = one_under(index, '', value, num, result)
-    break if value == 1
+    num, result = add_a_numeral(index, '', value, num, result)
+    next if value == 1
 
-    if a_five?(value)
-      prefix = NUMERALS[index + 1]
-      next_chunk = VALUES[index + 1] * 4
-    else
-      prefix = NUMERALS[index + 2]
-      next_chunk = VALUES[index + 2] * 9
-    end
-    num, result = one_under(index, prefix, next_chunk, num, result)
+    prefix, next_chunk = subtractive_numerals(value, index)
+    num, result = add_a_numeral(index, prefix, next_chunk, num, result)
   end
 
   result
