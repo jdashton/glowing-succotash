@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require_relative '../lab5.new_roman'
+require_relative '../lab5.old_roman'
 
 describe 'numeralize' do
   before do
