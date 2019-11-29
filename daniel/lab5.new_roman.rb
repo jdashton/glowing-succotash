@@ -1,4 +1,4 @@
-#!/usr/bin/envalue ruby
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 # I = 1
@@ -11,48 +11,40 @@
 
 NUMERALS = %w[M D C L X V I].freeze
 VALUES = [1_000, 500, 100, 50, 10, 5, 1].freeze
-
-def add_a_numeral(index, prefix, next_chunk, num, result)
-  while num >= next_chunk
-    num -= next_chunk
-    result += prefix + NUMERALS[index]
+ZIPPED_VALUES = VALUES.zip(NUMERALS).freeze
+INTERMEDIATE_VALUES =
+  ZIPPED_VALUES
+  .select { |(i, _l)| i > 1 }
+  .map
+  .with_index do |(val, num), idx|
+    next_one = idx + (val.to_s.start_with?(?5) ? 1 : 2)
+    [val - VALUES[next_one], NUMERALS[next_one] + num]
   end
-  [num, result]
-end
+  .freeze
+FINAL_VALUES =
+  ZIPPED_VALUES
+  .zip(INTERMEDIATE_VALUES)
+  .flatten(1)
+  .reject(&:nil?)
+  .freeze
 
-def a_five?(value)
-  value.to_s.start_with?('5')
-end
-
-def subtractive_numerals(value, index)
-  if a_five?(value)
-    next_one = index + 1
-    factor = 4
-  else
-    next_one = index + 2
-    factor = 9
-  end
-  [NUMERALS[next_one], VALUES[next_one] * factor]
-end
+puts 'This program displays numbers as old-school Roman numerals.'
+print 'Enter a number: '
+num = gets.to_i
 
 # Displays zero or more Roman numerals that fit into a number.
-# Returns the remainder.
+# Returns the resulting Roman numeral string.
 def numeralize(num)
   result = ''
 
-  VALUES.each_with_index do |value, index|
-    num, result = add_a_numeral(index, '', value, num, result)
-    next if value == 1
-
-    prefix, next_chunk = subtractive_numerals(value, index)
-    num, result = add_a_numeral(index, prefix, next_chunk, num, result)
+  FINAL_VALUES.each do |(value, numeral)|
+    while num >= value
+      num -= value
+      result += numeral
+    end
   end
 
   result
 end
 
-puts 'This program displays numbers as subtractive Roman numerals.'
-print 'Enter a number: '
-num = gets.to_i
-
-puts "#{ num } in new Roman numerals is #{ numeralize(num) }."
+puts "#{ num } in Old Roman numerals is #{ numeralize(num) }."
