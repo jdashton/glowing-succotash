@@ -11,6 +11,7 @@
 
 NUMERALS = %w[M D C L X V I].freeze
 VALUES = [1_000, 500, 100, 50, 10, 5, 1].freeze
+ZIPPED_VALUES = VALUES.zip NUMERALS
 
 puts 'This program displays numbers as old-school Roman numerals.'
 print 'Enter a number: '
@@ -18,13 +19,13 @@ num = gets.to_i
 
 # Displays zero or more Roman numerals that fit into a number.
 # Returns the remainder.
-def numeralize(num, rom_val = VALUES, rom_num = NUMERALS)
+def numeralize(num)
   result = ''
 
-  rom_val.each_with_index do |v, i|
-    while num >= v
-      num -= v
-      result += rom_num[i]
+  ZIPPED_VALUES.each do |pair|
+    while num >= pair[0]
+      num -= pair[0]
+      result += pair[1]
     end
   end
 
