@@ -18,14 +18,14 @@ print 'Enter a number: '
 num = gets.to_i
 
 # Displays zero or more Roman numerals that fit into a number.
-# Returns the remainder.
+# Returns the resulting Roman numeral string.
 def numeralize(num)
   result = ''
 
-  ZIPPED_VALUES.each do |pair|
-    while num >= pair[0]
-      num -= pair[0]
-      result += pair[1]
+  ZIPPED_VALUES.each do |(value, numeral)|
+    while num >= value
+      num -= value
+      result += numeral
     end
   end
 
