@@ -17,12 +17,12 @@ FIRST_THIRTY = {
 }.freeze
 
 VARIOUS = {
-  0 => '',
-  99 => 'XCIX',
-  100 => 'C',
-  499 => 'CDXCIX',
+  0     => '',
+  99    => 'XCIX',
+  100   => 'C',
+  499   => 'CDXCIX',
   1_000 => 'M',
-  1967 => 'MCMLXVII',
+  1967  => 'MCMLXVII',
   2_500 => 'MMD'
 }.freeze
 
