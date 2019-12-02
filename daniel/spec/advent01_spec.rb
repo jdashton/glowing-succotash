@@ -23,11 +23,11 @@ describe Advent1 do
   end
 
   it 'gets 654 for 1969' do
-    expect(subject.fuel(1969)).to eq 654
+    expect(subject.fuel(1969)).to eq 966
   end
 
   it 'gets 33583 for 100756' do
-    expect(subject.fuel(100_756)).to eq 33_583
+    expect(subject.fuel(100_756)).to eq 50_346
   end
 
   it 'sums two modules requirements' do
@@ -35,6 +35,6 @@ describe Advent1 do
   end
 
   it 'sums four modules requirements' do
-    expect(subject.total_fuel([12, 14, 1969, 100_756])).to eq(4 + 654 + 33_583)
+    expect(subject.total_fuel([12, 14, 1969, 100_756])).to eq(4 + 966 + 50_346)
   end
 end

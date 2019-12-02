@@ -5,7 +5,8 @@ class Advent1
   # to find the fuel required for a module, take its mass, divide by three,
   # round down, and subtract 2.
   def fuel(mass)
-    mass / 3 - 2
+    f = [mass / 3 - 2, 0].max
+    f + (f.positive? ? fuel(f) : 0)
   end
 
   def total_fuel(masses)
