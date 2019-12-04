@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Defines module fuel requirements
+# IntCode with + and * opcodes
 class Advent2
   # Implement an IntCode computer
   def run(prg_ary)
@@ -28,5 +28,16 @@ input = [1, 0, 0, 3, 1, 1, 2, 3, 1, 3, 4, 3, 1, 5, 0, 3, 2, 1, 10, 19, 1, 6, 19,
 adv2 = Advent2.new
 input[1] = 12
 input[2] = 2
-output = adv2.run(input)
+output = adv2.run([].replace(input))
 puts output[0]
+
+# Look for the input that produces 19690720 in [0]
+(0..99).each do |noun|
+  (0..99).each do |verb|
+    new_code = [].replace(input)
+    new_code[1] = noun
+    new_code[2] = verb
+    output = adv2.run(new_code)
+    puts noun * 100 + verb if output[0] == 19_690_720
+  end
+end
