@@ -18,10 +18,10 @@ class Advent3
     end
   end
 
-  def take_steps(instruction)
+  def take_steps(instruction, &step_block)
     instruction[1..].to_i.times do
       move(instruction[0])
-      yield if block_given?
+      step_block&.call
     end
   end
 
@@ -34,36 +34,32 @@ class Advent3
     end
   end
 
-  def inspect(instruction)
+  def inspect(instruction, _wire_num)
     take_steps(instruction)
     @xs.push @x
     @ys.push @y
   end
 
-  def trace_wire(wire)
-    wire.each do |instruction|
-      yield(instruction) if block_given?
+  def process_wires(*wires)
+    wires.each_with_index do |wire, wire_num|
+      @x = @xcenter
+      @y = @ycenter
+      wire.each do |instruction|
+        yield(instruction, wire_num)
+      end
     end
   end
 
-  def find_center(wire1, wire2)
-    [wire1, wire2].each_with_index do |wire, _idx|
-      @x = @xcenter
-      @y = @ycenter
-      trace_wire(wire) { |instruction| inspect(instruction) }
-    end
+  def find_center(*wires)
+    process_wires(*wires) { |inst, idx| inspect(inst, idx) }
     @xcenter = @xs.min.abs
     @ycenter = @ys.min.abs
   end
 
-  def find_nearest_crossing(wire1, wire2)
-    find_center(wire1, wire2)
+  def find_nearest_crossing(*wires)
+    find_center(*wires)
     # puts "Starting at [#{ @xcenter }, #{ @ycenter }]"
-    [wire1, wire2].each_with_index do |wire, idx|
-      @x = @xcenter
-      @y = @ycenter
-      trace_wire(wire) { |instruction| walk(instruction, idx) }
-    end
+    process_wires(*wires) { |inst, idx| walk(inst, idx) }
     # p @crossings
     @crossings.map { |(x, y)| (x - @xcenter).abs + (y - @ycenter).abs }.min
   end
