@@ -1,4 +1,7 @@
 
+require:
+  - rubocop-rspec
+  
 Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: separator
