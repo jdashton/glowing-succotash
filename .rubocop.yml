@@ -1,6 +1,9 @@
 
 require:
   - rubocop-rspec
+
+Metrics/BlockLength:
+  ExcludedMethods: ['context', 'describe']
   
 Layout/HashAlignment:
   EnforcedHashRocketStyle: table
