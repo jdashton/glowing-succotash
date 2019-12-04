@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 # Find intersection of two paths (or wires)
-class Advent3
+class Advent03
   def initialize
     @crossings = []
     @grid = [[]]
     @xs = []
     @ys = []
     @xcenter = @ycenter = 0
+    @lengths = []
   end
 
   def move(direction)
@@ -18,10 +19,10 @@ class Advent3
     end
   end
 
-  def take_steps(instruction, &step_block)
+  def take_steps(instruction)
     instruction[1..].to_i.times do
       move(instruction[0])
-      step_block&.call
+      yield if block_given?
     end
   end
 
@@ -40,10 +41,22 @@ class Advent3
     @ys.push @y
   end
 
+  def measure(instruction, wire_num)
+    take_steps(instruction) do
+      @wire_length += 1
+      # p @wire_length
+      if (cidx = @crossings.index([@x, @y])) && @lengths[cidx][wire_num].nil?
+        @lengths[cidx][wire_num] = @wire_length
+      end
+      # p @lengths
+    end
+  end
+
   def process_wires(*wires)
     wires.each_with_index do |wire, wire_num|
       @x = @xcenter
       @y = @ycenter
+      @wire_length = 0
       wire.each do |instruction|
         yield(instruction, wire_num)
       end
@@ -63,6 +76,12 @@ class Advent3
     # p @crossings
     @crossings.map { |(x, y)| (x - @xcenter).abs + (y - @ycenter).abs }.min
   end
+
+  def find_least_distance(*wires)
+    @crossings.each_index { |i| @lengths[i] = [] }
+    process_wires(*wires) { |inst, idx| measure(inst, idx) }
+    @lengths.map { |(l1, l2)| l1 + l2 }.min
+  end
 end
 
 input = <<~DOC_END
@@ -72,5 +91,6 @@ DOC_END
         .lines
         .map { |l| l.split ',' }
 
-adv3 = Advent3.new
+adv3 = Advent03.new
 puts adv3.find_nearest_crossing(*input)
+puts adv3.find_least_distance(*input)
