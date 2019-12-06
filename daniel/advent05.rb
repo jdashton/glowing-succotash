@@ -7,11 +7,20 @@ class Advent05
     modes[offset] ? v : prg_ary[v]
   end
 
+  def self.calc(idx, modes, prg_ary, operation)
+    val(idx, 1, modes, prg_ary)
+      .send(operation, val(idx, 2, modes, prg_ary))
+  end
+
   OPCODE_IMPLS = {
-    1 => ->(p, i, m) { p[p[i + 3]] = val(i, 1, m, p) + val(i, 2, m, p) },
-    2 => ->(p, i, m) { p[p[i + 3]] = val(i, 1, m, p) * val(i, 2, m, p) },
-    3 => ->(p, i, _) { p[p[i + 1]] = gets.to_i },
-    4 => ->(p, i, m) { puts "OUTPUT: #{ val(i, 1, m, p) }" }
+    1 => ->(p, i, m) { p[p[i + 3]] = calc(i, m, p, :+) },
+    2 => ->(p, i, m) { p[p[i + 3]] = calc(i, m, p, :*) },
+    3 => ->(p, i, _) { print 'INPUT: '; p[p[i + 1]] = gets.to_i },
+    4 => ->(p, i, m) { puts "OUTPUT: #{ val(i, 1, m, p) }" },
+    5 => ->(p, i, m) { val(i, 1, m, p).nonzero? ? val(i, 2, m, p) : i + 3 },
+    6 => ->(p, i, m) { val(i, 1, m, p).zero? ? val(i, 2, m, p) : i + 3 },
+    7 => ->(p, i, m) { p[p[i + 3]] = calc(i, m, p, :<) ? 1 : 0 },
+    8 => ->(p, i, m) { p[p[i + 3]] = calc(i, m, p, :==) ? 1 : 0 }
   }.freeze
 
   OPCODES = OPCODE_IMPLS.keys
@@ -20,10 +29,14 @@ class Advent05
     1 => 4,
     2 => 4,
     3 => 2,
-    4 => 2
+    4 => 2,
+    5 => 3,
+    6 => 3,
+    7 => 4,
+    8 => 4
   }.freeze
 
-  LONGEST_PARAM_LIST = OP_LENS.values.max - 1
+  JMP_OPS = [5, 6].freeze
 
   def op(opcode)
     opcode.to_s.rjust(2, ?0)[-2..].to_i
@@ -43,8 +56,8 @@ class Advent05
   def run(prg_ary)
     idx = 0
     while OPCODES.include?(o = op(prg_ary[idx]))
-      OPCODE_IMPLS[o].call(prg_ary, idx, modes(prg_ary[idx]))
-      idx += OP_LENS[o]
+      i = OPCODE_IMPLS[o].call(prg_ary, idx, modes(prg_ary[idx]))
+      idx = JMP_OPS.include?(o) ? i : idx + OP_LENS[o]
     end
     # puts prg_ary[idx] == 99 ? "HALT" : "UNEXPECTED OPCODE #{ prg_ary[idx] }"
     prg_ary
