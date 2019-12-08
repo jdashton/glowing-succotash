@@ -4,48 +4,32 @@ require 'set'
 
 # IntCode with + and * opcodes
 class Advent06
-  def initialize
-    @orbits = {}
+  def initialize(node_map)
+    @orbits = Hash[node_map.map { |line| line.split(')').reverse }]
   end
 
-  def build_map(map)
-    map.each do |line|
-      a, b = line.split ?)
-      @orbits[b] = a
-    end
+  def branch_length(spatial_object)
+    return 0 if @orbits[spatial_object].nil?
+
+    1 + branch_length(@orbits[spatial_object])
   end
 
-  def walk_map
-    @orbits.keys.reduce(0) { |acc, key| acc + one_branch(key) }
+  def branch_nodes(spatial_object)
+    return [] if @orbits[spatial_object].nil?
+
+    [@orbits[spatial_object]] + branch_nodes(@orbits[spatial_object])
   end
 
-  def one_branch(spatial_object)
-    val = @orbits[spatial_object]
-    # p "#{ spatial_object }, #{ val }"
-    val.nil? ? 0 : 1 + one_branch(val)
+  def count_orbits
+    @orbits.keys.reduce(0) { |acc, key| acc + branch_length(key) }
   end
 
-  def count_orbits(map)
-    build_map(map)
-    walk_map
-  end
-
-  def full_path(spatial_object)
-    val = @orbits[spatial_object]
-    val.nil? ? [] : [val] + full_path(val)
-  end
-
-  def walk_moves(*spatial_objects)
-    paths = spatial_objects.map { |so| full_path so }
+  def count_moves
+    paths = %w[YOU SAN].map { |so| branch_nodes(so) }
     while (paths.reduce(Set.new) { |acc, p| acc << p[-1] }).length == 1
       paths.each(&:pop)
     end
     paths.reduce(0) { |acc, p| acc + p.length }
-  end
-
-  def count_moves(map)
-    build_map(map)
-    walk_moves('YOU', 'SAN')
   end
 end
 
@@ -1781,6 +1765,6 @@ DOC_END
         .lines
         .map(&:chomp)
 
-adv6 = Advent06.new
-puts adv6.count_orbits(input)
-puts adv6.count_moves(input)
+adv6 = Advent06.new(input)
+puts adv6.count_orbits
+puts adv6.count_moves

@@ -4,8 +4,6 @@ require 'spec_helper'
 require_relative '../advent06'
 
 describe Advent06 do
-  subject(:adv06) { described_class.new }
-
   let(:input) do
     <<~DOC_END
       COM)B
@@ -45,18 +43,22 @@ describe Advent06 do
   end
 
   it 'counts 1 orbit for COM)B' do
-    expect(adv06.count_orbits(['COM)B'])) .to eq 1
+    adv06 = described_class.new(['COM)B'])
+    expect(adv06.count_orbits) .to eq 1
   end
 
   it 'counts 3 orbits for COM)B,B)C' do
-    expect(adv06.count_orbits(['COM)B', 'B)C'])) .to eq 3
+    adv06 = described_class.new(['COM)B', 'B)C'])
+    expect(adv06.count_orbits) .to eq 3
   end
 
   it 'counts 42 orbits for the full example' do
-    expect(adv06.count_orbits(input)).to eq 42
+    adv06 = described_class.new(input)
+    expect(adv06.count_orbits).to eq 42
   end
 
   it 'counts 4 move from YOU to SAN' do
-    expect(adv06.count_moves(input2)).to eq 4
+    adv06 = described_class.new(input2)
+    expect(adv06.count_moves).to eq 4
   end
 end
