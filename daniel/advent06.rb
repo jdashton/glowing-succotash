@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'set'
+
 # IntCode with + and * opcodes
 class Advent06
   def initialize
@@ -26,6 +28,24 @@ class Advent06
   def count_orbits(map)
     build_map(map)
     walk_map
+  end
+
+  def full_path(spatial_object)
+    val = @orbits[spatial_object]
+    val.nil? ? [] : [val] + full_path(val)
+  end
+
+  def walk_moves(*spatial_objects)
+    paths = spatial_objects.map { |so| full_path so }
+    while (paths.reduce(Set.new) { |acc, p| acc << p[-1] }).length == 1
+      paths.each(&:pop)
+    end
+    paths.reduce(0) { |acc, p| acc + p.length }
+  end
+
+  def count_moves(map)
+    build_map(map)
+    walk_moves('YOU', 'SAN')
   end
 end
 
@@ -1763,3 +1783,4 @@ DOC_END
 
 adv6 = Advent06.new
 puts adv6.count_orbits(input)
+puts adv6.count_moves(input)

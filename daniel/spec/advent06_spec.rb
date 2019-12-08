@@ -37,6 +37,8 @@ describe Advent06 do
       E)J
       J)K
       K)L
+      K)YOU
+      I)SAN
     DOC_END
       .lines
       .map(&:chomp)
@@ -51,6 +53,10 @@ describe Advent06 do
   end
 
   it 'counts 42 orbits for the full example' do
-    expect(adv06.count_orbits(input)) .to eq 42
+    expect(adv06.count_orbits(input)).to eq 42
+  end
+
+  it 'counts 4 move from YOU to SAN' do
+    expect(adv06.count_moves(input2)).to eq 4
   end
 end
