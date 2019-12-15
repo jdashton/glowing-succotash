@@ -93,12 +93,15 @@ class Advent07
     # p "run_one #{ phases } : #{ index } : #{ pipes } : #{ threads }"
 
     # Prime the output pipe with the phase for the next computer
-    phases.empty? || pipes[(index + 1) % 5][1] << "#{ phases.shift }\n"
-    threads.push(
-      Thread.new { run prg_ary.dup, pipes[index][0], pipes[(index + 1) % 5][1] }
-    )
+    next_idx = (index + 1) % 5
+    unless phases.empty?
+      pipes[next_idx][1] << "#{ phases.shift }\n"
+      run_one(prg_ary, phases, next_idx, pipes, threads)
+    end
 
-    index == 4 || run_one(prg_ary, phases, index + 1, pipes, threads)
+    threads.push(
+      Thread.new { run(prg_ary.dup, pipes[index][0], pipes[next_idx][1]) }
+    )
   end
 
   # Run a program on a pipeline of five amplifiers, with 0 as the first input.
