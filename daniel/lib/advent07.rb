@@ -23,10 +23,6 @@ class Advent07
     end
   end
 
-  def initialize
-    @feedback = false
-  end
-
   OPCODE_IMPLS = {
     1 => ->(p, i, m, _, _) { p[p[i + 3]] = calc(i, m, p, :+) },
     2 => ->(p, i, m, _, _) { p[p[i + 3]] = calc(i, m, p, :*) },
