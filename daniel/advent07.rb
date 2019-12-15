@@ -9,4 +9,4 @@ DOC_END
         .split(?,)
         .map(&:to_i)
 
-Advent07.new.amplify input
+Advent07.new.amplify_feedback input

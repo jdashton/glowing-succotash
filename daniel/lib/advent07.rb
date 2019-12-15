@@ -22,6 +22,10 @@ class Advent07
     end
   end
 
+  def initialize
+    @feedback = false
+  end
+
   OPCODE_IMPLS = {
     1 => ->(p, i, m, _, _) { p[p[i + 3]] = calc(i, m, p, :+) },
     2 => ->(p, i, m, _, _) { p[p[i + 3]] = calc(i, m, p, :*) },
@@ -74,23 +78,42 @@ class Advent07
   end
 
   def run_stack(prg_ary, phases)
-    inp_sig = 0
-    phases.each do |phase|
-      inp = StringIO.new("#{ phase }\n#{ inp_sig }\n")
-      out = StringIO.new
-      run(prg_ary.dup, inp, out)
-      out.rewind
-      inp_sig = out.gets.to_i
-    end
-    inp_sig
+    # $>.puts "run_stack #{ phases }"
+    pipes = phases.map { |_| IO.pipe }
+    threads = []
+    pipes[0][1] << "#{ phases.shift }\n0\n"
+    run_one(prg_ary, phases, 0, pipes, threads)
+    threads.each(&:join)
+    pipes[0][0].gets.to_i
+  end
+
+  def run_one(prg_ary, phases, index, pipes, threads)
+    # pipes[index] holds the pipe that is input for this computer.
+    # Create a pipe that will be this computer's output.
+    # p "run_one #{ phases } : #{ index } : #{ pipes } : #{ threads }"
+
+    # Prime the output pipe with the phase for the next computer
+    phases.empty? || pipes[(index + 1) % 5][1] << "#{ phases.shift }\n"
+    threads.push(
+      Thread.new { run prg_ary.dup, pipes[index][0], pipes[(index + 1) % 5][1] }
+    )
+
+    index == 4 || run_one(prg_ary, phases, index + 1, pipes, threads)
   end
 
   # Run a program on a pipeline of five amplifiers, with 0 as the first input.
   def amplify(prg_ary)
     outputs = []
-    (0..4).to_a.permutation.each do |list|
+    phases = @feedback ? (5..9) : (0..4)
+    phases.to_a.permutation.each do |list|
+      # $DEFAULT_OUTPUT.puts "calling run_stack with #{ prg_ary } : #{ list }"
       outputs.push run_stack(prg_ary, list)
     end
     $DEFAULT_OUTPUT.puts outputs.max
+  end
+
+  def amplify_feedback(prg_ary)
+    @feedback = true
+    amplify prg_ary
   end
 end
