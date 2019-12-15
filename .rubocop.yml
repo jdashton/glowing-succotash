@@ -3,7 +3,7 @@ require:
   - rubocop-rspec
 
 Metrics/BlockLength:
-  ExcludedMethods: ['context', 'describe']
+  ExcludedMethods: ['context', 'describe', 'before']
   
 Layout/HashAlignment:
   EnforcedHashRocketStyle: table
