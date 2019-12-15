@@ -78,30 +78,29 @@ class Advent07
   end
 
   def run_stack(prg_ary, phases)
-    # $>.puts "run_stack #{ phases }"
-    pipes = phases.map { |_| IO.pipe }
-    threads = []
-    pipes[0][1] << "#{ phases.shift }\n0\n"
-    run_one(prg_ary, phases, 0, pipes, threads)
-    threads.each(&:join)
-    pipes[0][0].gets.to_i
+    run_one(prg_ary, phases, [])
   end
 
-  def run_one(prg_ary, phases, index, pipes, threads)
-    # pipes[index] holds the pipe that is input for this computer.
-    # Create a pipe that will be this computer's output.
-    # p "run_one #{ phases } : #{ index } : #{ pipes } : #{ threads }"
+  def run_one(prg_ary, phases, pipes)
+    IO.pipe { |pread, pwrite| 
+      pipes.push [pread, pwrite]
+      pwrite << "#{ phases.shift }\n"
 
-    # Prime the output pipe with the phase for the next computer
-    next_idx = (index + 1) % 5
-    unless phases.empty?
-      pipes[next_idx][1] << "#{ phases.shift }\n"
-      run_one(prg_ary, phases, next_idx, pipes, threads)
-    end
-
-    threads.push(
-      Thread.new { run(prg_ary.dup, pipes[index][0], pipes[next_idx][1]) }
-    )
+      if !phases.empty?
+        run_one(prg_ary, phases, pipes)
+      else
+        pipes[5] = pipes[0]
+        threads = Set.new
+        pipes.each_cons(2) do |pipe_pair|
+          threads << (
+            Thread.new { run(prg_ary.dup, pipe_pair[0][0], pipe_pair[1][1]) }
+          )
+        end
+        pipes[0][1] << "0\n"
+        threads.each(&:join)
+        pipes[0][0].gets.to_i
+      end
+    }
   end
 
   # Run a program on a pipeline of five amplifiers, with 0 as the first input.
