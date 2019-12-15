@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'English'
+require 'set'
 
 # IntCode with + and * opcodes
 class Advent07
@@ -77,45 +78,38 @@ class Advent07
     prg_ary
   end
 
-  def run_stack(prg_ary, phases)
-    run_one(prg_ary, phases, [])
+  def start_computers(prg_ary, pipes)
+    threads = Set.new
+    (pipes + [pipes[0]]).each_cons(2) do |((inp, _), (_, outp))|
+      threads << Thread.new { run(prg_ary.dup, inp, outp) }
+    end
+    pipes[0][1] << "0\n"
+    threads.each(&:join)
   end
 
-  def run_one(prg_ary, phases, pipes)
-    IO.pipe { |pread, pwrite| 
+  def run_one(prg_ary, phases, pipes = [])
+    IO.pipe do |pread, pwrite|
       pipes.push [pread, pwrite]
       pwrite << "#{ phases.shift }\n"
 
-      if !phases.empty?
-        run_one(prg_ary, phases, pipes)
-      else
-        pipes[5] = pipes[0]
-        threads = Set.new
-        pipes.each_cons(2) do |pipe_pair|
-          threads << (
-            Thread.new { run(prg_ary.dup, pipe_pair[0][0], pipe_pair[1][1]) }
-          )
-        end
-        pipes[0][1] << "0\n"
-        threads.each(&:join)
-        pipes[0][0].gets.to_i
-      end
-    }
+      return run_one(prg_ary, phases, pipes) unless phases.empty?
+
+      start_computers(prg_ary, pipes)
+      pipes[0][0].gets.to_i
+    end
   end
 
   # Run a program on a pipeline of five amplifiers, with 0 as the first input.
-  def amplify(prg_ary)
+  def amplify(prg_ary, feedback = false)
     outputs = []
-    phases = @feedback ? (5..9) : (0..4)
+    phases = feedback ? (5..9) : (0..4)
     phases.to_a.permutation.each do |list|
-      # $DEFAULT_OUTPUT.puts "calling run_stack with #{ prg_ary } : #{ list }"
-      outputs.push run_stack(prg_ary, list)
+      outputs.push run_one(prg_ary, list)
     end
-    $DEFAULT_OUTPUT.puts outputs.max
+    puts outputs.max
   end
 
   def amplify_feedback(prg_ary)
-    @feedback = true
-    amplify prg_ary
+    amplify prg_ary, true
   end
 end
