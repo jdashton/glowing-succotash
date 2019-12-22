@@ -75,9 +75,8 @@ class Advent07
   end
 
   def start_computers(prg_ary, pipes)
-    threads = Set.new
-    (pipes + [pipes[0]]).each_cons(2) do |((inp, _), (_, outp))|
-      threads << Thread.new { run(prg_ary.dup, inp, outp) }
+    threads = (pipes + [pipes[0]]).each_cons(2).map do |((inp, _), (_, outp))|
+      Thread.new { run(prg_ary.dup, inp, outp) }
     end
     pipes[0][1] << "0\n"
     threads.each(&:join)
@@ -96,16 +95,13 @@ class Advent07
   end
 
   # Run a program on a pipeline of five amplifiers, with 0 as the first input.
-  def amplify(prg_ary, feedback = false)
-    outputs = []
-    phases = feedback ? (5..9) : (0..4)
-    phases.to_a.permutation.each do |list|
-      outputs.push run_one(prg_ary, list)
-    end
+  def amplify(prg_ary, range = 0..4)
+    partial = method(:run_one).curry.call(prg_ary)
+    outputs = range.to_a.permutation.map(&partial)
     puts outputs.max
   end
 
   def amplify_feedback(prg_ary)
-    amplify prg_ary, true
+    amplify prg_ary, 5..9
   end
 end
