@@ -26,20 +26,20 @@ VARIOUS = {
   2_500 => 'MMD'
 }.freeze
 
-describe 'numeralize' do
+describe 'numeralize_new' do
   before do
     Object.send(:public, *Object.private_instance_methods)
   end
 
   it 'matches expectations for various conversions' do
     VARIOUS.each do |k, v|
-      expect(numeralize(k)).to eq v
+      expect(numeralize_new(k)).to eq v
     end
   end
 
   it 'matches Wolfram for the first 30 conversions' do
     FIRST_THIRTY.each do |k, v|
-      expect(numeralize(k)).to eq v
+      expect(numeralize_new(k)).to eq v
     end
   end
 end

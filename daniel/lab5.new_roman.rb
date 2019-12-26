@@ -14,19 +14,19 @@ VALUES = [1_000, 500, 100, 50, 10, 5, 1].freeze
 ZIPPED_VALUES = VALUES.zip(NUMERALS).freeze
 INTERMEDIATE_VALUES =
   ZIPPED_VALUES
-  .select { |(i, _l)| i > 1 }
-  .map
-  .with_index do |(val, num), idx|
+    .select { |(i, _l)| i > 1 }
+    .map
+    .with_index do |(val, num), idx|
     next_one = idx + (val.to_s.start_with?(?5) ? 1 : 2)
     [val - VALUES[next_one], NUMERALS[next_one] + num]
   end
-  .freeze
+    .freeze
 FINAL_VALUES =
   ZIPPED_VALUES
-  .zip(INTERMEDIATE_VALUES)
-  .flatten(1)
-  .reject(&:nil?)
-  .freeze
+    .zip(INTERMEDIATE_VALUES)
+    .flatten(1)
+    .reject(&:nil?)
+    .freeze
 
 puts 'This program displays numbers as old-school Roman numerals.'
 print 'Enter a number: '
@@ -34,7 +34,7 @@ num = gets.to_i
 
 # Displays zero or more Roman numerals that fit into a number.
 # Returns the resulting Roman numeral string.
-def numeralize(num)
+def numeralize_new(num)
   result = ''
 
   FINAL_VALUES.each do |(value, numeral)|
@@ -47,4 +47,4 @@ def numeralize(num)
   result
 end
 
-puts "#{ num } in Old Roman numerals is #{ numeralize(num) }."
+puts "#{ num } in 'New' Roman numerals is #{ numeralize_new(num) }."
