@@ -37,7 +37,7 @@ class Advent10
   end
 
   def parse_map(input_text)
-    input_map = input_text.split.map { |line| line.split('') }
+    input_map = input_text.split.map(&:chars)
     search_map input_map
   end
 end

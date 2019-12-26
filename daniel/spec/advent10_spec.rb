@@ -9,18 +9,18 @@ describe Advent10 do
   before do
     prgs = {
       'INPUT1'  => [
-        '.#..#'.split(''),
-        '.....'.split(''),
-        '#####'.split(''),
-        '....#'.split(''),
-        '...##'.split('')
+        '.#..#'.chars,
+        '.....'.chars,
+        '#####'.chars,
+        '....#'.chars,
+        '...##'.chars
       ],
       'OUTPUT1' => [
-        '.7..7'.split('').map(&:to_i),
-        '.....'.split('').map(&:to_i),
-        '67775'.split('').map(&:to_i),
-        '....7'.split('').map(&:to_i),
-        '...87'.split('').map(&:to_i)
+        '.7..7'.chars.map(&:to_i),
+        '.....'.chars.map(&:to_i),
+        '67775'.chars.map(&:to_i),
+        '....7'.chars.map(&:to_i),
+        '...87'.chars.map(&:to_i)
       ],
       'INPUT2'  => <<~INPUT2_END
         ......#.#.
@@ -34,7 +34,7 @@ describe Advent10 do
         ##...#..#.
         .#....####
       INPUT2_END
-           .to_str,
+                     .to_str,
       'INPUT3'  => <<~INPUT3_END
         #.#...#.#.
         .###....#.
@@ -47,7 +47,7 @@ describe Advent10 do
         ......#...
         .####.###.
       INPUT3_END
-           .to_str,
+                     .to_str,
       'INPUT4'  => <<~INPUT4_END
         .#..#..###
         ####.###.#
@@ -60,7 +60,7 @@ describe Advent10 do
         .##...##.#
         .....#.#..
       INPUT4_END
-           .to_str,
+                     .to_str,
       'INPUT5'  => <<~INPUT5_END
         .#..##.###...#######
         ##.############..##.
@@ -83,7 +83,7 @@ describe Advent10 do
         #.#.#.#####.####.###
         ###.##.####.##.#..##
       INPUT5_END
-           .to_str
+                     .to_str
     }
     prgs.each { |k, v| stub_const(k, v) }
   end
