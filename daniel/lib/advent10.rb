@@ -4,15 +4,6 @@ require 'set'
 
 # Look around an asteriod map, and blast the laser
 class Advent10
-  def transform(input_map)
-    @input_map = input_map
-    input_map.map.with_index do |input_row, row_idx|
-      input_row.map.with_index do |sector, col_idx|
-        sector == '.' ? 0 : look_around(col_idx, row_idx)
-      end
-    end
-  end
-
   def look_around(sector_x, sector_y)
     roids = Set.new
     @input_map.each_with_index do |row, row_idx|
@@ -20,10 +11,19 @@ class Advent10
         next unless col == '#'
         next if col_idx == sector_x && row_idx == sector_y
 
-        roids << Math.atan2(col_idx - sector_x, row_idx - sector_y)
+        roids << Math.atan2(row_idx - sector_y, col_idx - sector_x)
       end
     end
     roids.size
+  end
+
+  def transform(input_map)
+    @input_map = input_map
+    input_map.map.with_index do |input_row, row_idx|
+      input_row.map.with_index do |sector, col_idx|
+        sector == '.' ? 0 : look_around(col_idx, row_idx)
+      end
+    end
   end
 
   def search_map(input_map)
