@@ -163,4 +163,21 @@ describe Advent12 do
     10.times { adv12.step }
     expect(adv12.total_energy).to eq(179)
   end
+
+  it 'finds velocity 0 at 1386 steps' do
+    1386.times { adv12.step }
+    expect(adv12.group_vectors.filter.with_index { |_, i| i.odd? })
+      .to eq(described_class
+        .parse_vectors(STEP0)
+        .filter.with_index { |_, i| i.odd? })
+  end
+
+  it 'finds initial conditions at 2772 steps' do
+    2772.times { adv12.step }
+    expect(adv12.group_vectors).to eq(described_class.parse_vectors(STEP0))
+  end
+
+  it 'calculates 2772 steps to lcm of cycle length' do
+    expect(adv12.seek_repeat).to eq(2772)
+  end
 end

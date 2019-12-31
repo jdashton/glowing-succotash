@@ -156,4 +156,8 @@ describe Advent12 do
     100.times { adv12.step }
     expect(adv12.total_energy).to eq(1940)
   end
+
+  it 'calculates 2772 steps to lcm of cycle length' do
+    expect(adv12.seek_repeat).to eq(4686774924)
+  end
 end

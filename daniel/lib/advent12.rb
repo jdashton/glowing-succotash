@@ -31,6 +31,7 @@ class Advent12
   MOON_LIST = %i[@io @europa @ganymede @callisto].freeze
   def initialize
     MOON_LIST.each { |moon| instance_variable_set(moon, Moon.new) }
+    @steps = {}
   end
 
   def self.parse_vectors(str)
@@ -90,5 +91,36 @@ class Advent12
       moon = instance_variable_get(m)
       sys_acc + moon.pot_energy * moon.kin_energy
     end
+  end
+
+  def slice_vectors(vectors)
+    as = []
+    (0..2).each do |idx|
+      as << vectors.map { |v| v[idx] }
+    end
+    as
+  end
+
+  def check_repeat(step_num)
+    crnt_grps = slice_vectors(group_vectors)
+    (0..2).each do |i|
+      next if @steps[i]
+      next unless crnt_grps[i] == @init_grps[i]
+
+      @steps[i] = step_num
+      p "Axis #{ i } repeats at #{ step_num } steps."
+    end
+  end
+
+  def seek_repeat
+    i = 0
+    @init_grps = slice_vectors(group_vectors)
+    loop do
+      step
+      check_repeat(i += 1)
+      break if @steps.size == 3
+    end
+    vals = @steps.values
+    vals[0].lcm(vals[1]).lcm(vals[2])
   end
 end
