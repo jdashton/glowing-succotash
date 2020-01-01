@@ -101,7 +101,7 @@ describe Advent12 do
   it 'applies gravity' do
     adv12.europa.position = Vector[1, 2, 3]
     adv12.europa.velocity = Vector[-2, 0, 3]
-    adv12.apply_velocity([:@europa])
+    adv12.apply_velocity
     expect(adv12.europa.position).to eq Vector[-1, 2, 6]
   end
 
