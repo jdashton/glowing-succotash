@@ -25,3 +25,5 @@ Style/Semicolon:
 Style/MultilineBlockChain:
   Enabled: false
 
+Naming/MethodParameterName:
+  AllowedNames: [x, y]
