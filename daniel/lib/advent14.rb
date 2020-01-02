@@ -18,15 +18,14 @@ class Advent14
     end
   end
 
-  def produce(product, qty)
-    return @ore_consumed += qty if product == :ORE
+  def produce(product, qty_rqstd, factor = 1)
+    qty_rqstd *= factor
+    return @ore_consumed += qty_rqstd if product == :ORE
 
-    while @surplus[product] < qty
-      batch_size, ingredients = @recipe_tree[product]
-      ingredients.each { |i| produce(*i) }
-      @surplus[product] += batch_size
-    end
-    @surplus[product] -= qty
+    batch_size, ingredients = @recipe_tree[product]
+    num_batches = ((qty_rqstd - @surplus[product]) / batch_size.to_f).ceil
+    ingredients.each { |i| produce(*i, num_batches) }
+    @surplus[product] += batch_size * num_batches - qty_rqstd
   end
 
   def find_needs(recipe)
@@ -35,5 +34,14 @@ class Advent14
 
     produce(:FUEL, 1)
     @ore_consumed
+  end
+
+  TRILLION = 1_000_000_000_000
+
+  def how_much(recipe)
+    @recipe_tree = Hash[parse_recipe(recipe)]
+    produce(:FUEL, TRILLION)
+    actual_per_unit = @ore_consumed / TRILLION.to_f
+    (TRILLION / actual_per_unit).floor
   end
 end

@@ -97,4 +97,16 @@ describe Advent14 do
   it 'needs 31 ore to produce 1 fuel in EXAMPLE1' do
     expect(adv14.find_needs(EXAMPLE1)).to eq(31)
   end
+
+  it 'can produce 82892753 fuel for EXAMPLE3' do
+    expect(adv14.how_much(EXAMPLE3)).to eq(82_892_753)
+  end
+
+  it 'can produce 5586022 fuel for EXAMPLE4' do
+    expect(adv14.how_much(EXAMPLE4)).to eq(5_586_022)
+  end
+
+  it 'can produce 460664 fuel for EXAMPLE5' do
+    expect(adv14.how_much(EXAMPLE5)).to eq(460_664)
+  end
 end

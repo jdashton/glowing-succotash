@@ -7,4 +7,4 @@ input =
     .read('input/advent14.txt')
 
 adv14 = Advent14.new
-p adv14.find_needs(input)
+p adv14.how_much(input)
