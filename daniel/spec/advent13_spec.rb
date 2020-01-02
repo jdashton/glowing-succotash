@@ -11,15 +11,20 @@ describe Advent13 do
     consts = {
       'INSTRUCTIONS' =>
                         [
-                          1, 0,
-                          0, 0,
-                          1, 0,
-                          1, 0,
-                          0, 1,
-                          1, 0,
-                          1, 0
+                          1, 2, 3,
+                          6, 5, 4
                         ]
     }
     consts.each { |k, v| stub_const(k, v) }
+  end
+
+  it 'draws a paddle and ball' do
+    adv13.run INSTRUCTIONS
+    expect(adv13.board).to eq([1, 2] => 3, [6, 5] => 4)
+  end
+
+  it 'counts zero block tiles' do
+    adv13.run INSTRUCTIONS
+    expect(adv13.count_blocks).to be_zero
   end
 end

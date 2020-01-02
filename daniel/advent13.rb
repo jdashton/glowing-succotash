@@ -9,5 +9,7 @@ input =
     .split(?,)
     .map(&:to_i)
 
-adv13 = Advent13.new true
+input[0] = 2 # stick in 2 quarters
+adv13 = Advent13.new
 Advent09.new.run input, adv13, adv13
+puts "Score: #{ adv13.score } with #{ adv13.count_blocks } blocks remaining"
