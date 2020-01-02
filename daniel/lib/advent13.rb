@@ -10,21 +10,23 @@ class Advent13
     @board = {}
     @pending_coords = []
     @score = 0
+    @ball_x = 0
+    @paddle_x = 0
   end
 
   def gets
-    0
+    @ball_x <=> @paddle_x
   end
 
   def puts(val)
-    if @pending_coords.size < 2
-      @pending_coords << val
-      return
-    end
+    return @pending_coords << val if @pending_coords.size < 2
+
     if @pending_coords[0].negative?
       @score = val
     else
       @board[@pending_coords] = val
+      @paddle_x = @pending_coords[0] if val == 3
+      @ball_x = @pending_coords[0] if val == 4
     end
     @pending_coords = []
   end
