@@ -6,5 +6,5 @@ input =
   IO
     .read('input/advent14.txt')
 
-adv14 = Advent14.new input
-p adv14
+adv14 = Advent14.new
+p adv14.find_needs(input)
