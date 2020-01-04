@@ -1,93 +1,62 @@
 # frozen_string_literal: true
 
+require 'matrix'
+
 # Maze traversal for Intcode-controlled repair droid
 class Advent15
-  attr_reader :known_world, :coords
-  attr_accessor :last_move_direction, :movelist
+  attr_reader :known_world, :coords, :oxygen_coords, :oxygen_num_moves
 
-  NORTH = 1
-  SOUTH = 2
-  WEST = 3
-  EAST = 4
-  DIR_SEQ = [NORTH, EAST, SOUTH, WEST].freeze
-  REV_DIR = {
-    NORTH => SOUTH,
-    SOUTH => NORTH,
-    WEST  => EAST,
-    EAST  => WEST
-  }.freeze
+  ORIGIN = Vector[0, 0]
 
   def initialize
-    @coords = [0, 0]
-    @known_world = { @coords => '.' }
-    @last_move_direction = nil
+    @coords = ORIGIN
+    @known_world = { @coords => 1 }
+    @move_dir = nil
     @movelist = []
     @backtracking = false
   end
 
+  MOVES = {
+    1 => Vector[0, 1],  # North
+    2 => Vector[0, -1], # South
+    3 => Vector[-1, 0], # West
+    4 => Vector[1, 0]   # East
+  }.freeze
+
+  INV_MOVES = MOVES.invert
+
   def gets
-    raise 'Oxygen system found' if @known_world[@coords] == 'O'
-
     # First, try going in a direction we don't know yet.
-    # If all are known, mark the current coords as 'U' unfruitful,
-    #   and backtrack by reversing the previous move in movelist.
-    DIR_SEQ.each do |dir|
-      STDOUT.puts "Shall we go #{ dir }?"
-      if @known_world[transform(@coords, dir)].nil?
-        STDOUT.puts "  --  yes  --  "
-        return @last_move_direction = dir
-      end
+    # If all are known, backtrack by reversing the previous move in movelist.
+    MOVES.keys.shuffle.each do |dir|
+      return @move_dir = dir if @known_world[@coords + MOVES[dir]].nil?
     end
-    STDOUT.puts "No unknown directions, mark #{ @coords } as unfruitful"
-    @known_world[@coords] = ?U
-    p @movelist
     @backtracking = true
-    @last_move_direction = REV_DIR[@movelist.pop]
-  end
-
-  def transform(coords, direction)
-    case direction
-    when NORTH
-      [coords[0], coords[1] + 1]
-    when SOUTH
-      [coords[0], coords[1] - 1]
-    when WEST
-      [coords[0] - 1, coords[1]]
-    when EAST
-      [coords[0] + 1, coords[1]]
-    end
+    @move_dir =
+      @movelist.empty? ? nil : INV_MOVES[ORIGIN - MOVES[@movelist.pop]]
   end
 
   def simulate(interactions)
     interactions.each_slice(2) do |(direction, status)|
-      @last_move_direction = direction
+      @move_dir = direction
       puts(status)
     end
   end
 
   HIT_WALL = 0
-  MOVED = 1
   MOVED_AND_ARRIVED = 2
 
   def puts(status)
-    c = transform(@coords, @last_move_direction)
-    @known_world[c] = (status == HIT_WALL ? '#' : '.')
+    new_coords = @coords + MOVES[@move_dir]
+    @known_world[new_coords] = status
     return if status == HIT_WALL
 
-    @known_world[c] = 'O' if status == MOVED_AND_ARRIVED
-
-    STDOUT.puts "  Last move was #{ @last_move_direction }"
-    if @backtracking
-      @backtracking = false
-    else
-      @movelist << @last_move_direction
-    end
-    STDOUT.puts "    Movelist now #{ @movelist }"
-    @coords = c
-    STDOUT.puts "  Now at coords #{ @coords }"
-
+    @coords = new_coords
+    @movelist << @move_dir unless @backtracking
+    @backtracking = false if @backtracking
     return unless status == MOVED_AND_ARRIVED
 
-    STDOUT.puts "Oxygen system found at #{ c } in #{ @movelist.size } moves."
+    @oxygen_coords = @coords
+    @oxygen_num_moves = @movelist.size
   end
 end
