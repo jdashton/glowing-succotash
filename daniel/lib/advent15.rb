@@ -70,11 +70,10 @@ class Advent15
     return 0 if @known_world[coords] != 1 # 0 is WALL, 2 is OXYGEN
 
     @known_world[coords] = 2
-    MOVES.keys.map { |dir| 1 + fill_o2(coords + MOVES[dir]) }.max
+    1 + MOVES.keys.map { |dir| fill_o2(coords + MOVES[dir]) }.max
   end
 
   def minutes_to_oxygen
-    @coords = @oxygen_coords
-    MOVES.keys.map { |dir| fill_o2(coords + MOVES[dir]) }.max
+    MOVES.keys.map { |dir| fill_o2(@oxygen_coords + MOVES[dir]) }.max
   end
 end
