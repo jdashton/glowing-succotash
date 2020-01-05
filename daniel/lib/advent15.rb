@@ -29,11 +29,14 @@ class Advent15
     # First, try going in a direction we don't know yet.
     # If all are known, backtrack by reversing the previous move in @movelist.
     MOVES.keys.each do |dir|
-      return p(@move_dir = dir) if @known_world[@coords + MOVES[dir]].nil?
+      return @move_dir = dir if @known_world[@coords + MOVES[dir]].nil?
+      # return p(@move_dir = dir) if @known_world[@coords + MOVES[dir]].nil?
     end
     @backtracking = true
-    p(@move_dir =
-        @movelist.empty? ? nil : INV_MOVES[ORIGIN - MOVES[@movelist.pop]])
+    @move_dir =
+      @movelist.empty? ? nil : INV_MOVES[ORIGIN - MOVES[@movelist.pop]]
+    # p(@move_dir =
+    #     @movelist.empty? ? nil : INV_MOVES[ORIGIN - MOVES[@movelist.pop]])
   end
 
   def simulate(interactions)
@@ -47,7 +50,7 @@ class Advent15
   MOVED_AND_ARRIVED = 2
 
   def puts(status)
-    p status
+    # p status
     raise 'status should never be nil' if status.nil?
 
     new_coords = @coords + MOVES[@move_dir]
@@ -61,5 +64,17 @@ class Advent15
 
     @oxygen_coords = @coords
     @oxygen_num_moves = @movelist.size
+  end
+
+  def fill_o2(coords)
+    return 0 if @known_world[coords] != 1 # 0 is WALL, 2 is OXYGEN
+
+    @known_world[coords] = 2
+    MOVES.keys.map { |dir| 1 + fill_o2(coords + MOVES[dir]) }.max
+  end
+
+  def minutes_to_oxygen
+    @coords = @oxygen_coords
+    MOVES.keys.map { |dir| fill_o2(coords + MOVES[dir]) }.max
   end
 end

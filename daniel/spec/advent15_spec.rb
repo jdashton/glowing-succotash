@@ -90,11 +90,11 @@ describe Advent15 do
 
   it 'discovers the entire room' do
     loop do
-      p(req = adv15.gets)
-      break if req.nil?
+      # p(req = adv15.gets)
+      break if (req = adv15.gets).nil?
 
       adv15.puts(FULL_WORLD[adv15.coords + MOVES[req]])
-      p adv15.known_world
+      # p adv15.known_world
     end
     expect(adv15.known_world).to eq(FULL_WORLD)
   end
@@ -106,5 +106,16 @@ describe Advent15 do
       adv15.puts 0
     end
     expect(adv15.known_world).to eq(TINY_WORLD)
+  end
+
+  it 'takes 4 minutes to fill the room with oxygen' do
+    loop do
+      # p(req = adv15.gets)
+      break if (req = adv15.gets).nil?
+
+      adv15.puts(FULL_WORLD[adv15.coords + MOVES[req]])
+      # p adv15.known_world
+    end
+    expect(adv15.minutes_to_oxygen).to eq(4)
   end
 end
