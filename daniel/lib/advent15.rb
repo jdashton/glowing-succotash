@@ -66,14 +66,14 @@ class Advent15
     @oxygen_num_moves = @movelist.size
   end
 
-  def fill_o2(coords)
-    return 0 if @known_world[coords] != 1 # 0 is WALL, 2 is OXYGEN
+  def fill_o2(coords = omitted = @oxygen_coords)
+    # On the first call we'll be sitting on a '2', but any other call with a 2
+    # means we've already visited this tile.
+    # If omitted is truthy, this is the first call.
+    return 0 if !omitted && @known_world[coords] != 1 # 0 is WALL, 2 is OXYGEN
 
-    @known_world[coords] = 2
-    1 + MOVES.keys.map { |dir| fill_o2(coords + MOVES[dir]) }.max
-  end
-
-  def minutes_to_oxygen
-    MOVES.keys.map { |dir| fill_o2(@oxygen_coords + MOVES[dir]) }.max
+    @known_world[coords] = 2 # Redundant on the first call, but cheap enough.
+    (omitted ? 0 : 1) +      # Count 0 for the first call, but 1 for the others.
+      MOVES.keys.map { |dir| fill_o2(coords + MOVES[dir]) }.max
   end
 end

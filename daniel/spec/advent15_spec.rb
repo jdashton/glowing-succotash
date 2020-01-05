@@ -116,6 +116,6 @@ describe Advent15 do
       adv15.puts(FULL_WORLD[adv15.coords + MOVES[req]])
       # p adv15.known_world
     end
-    expect(adv15.minutes_to_oxygen).to eq(4)
+    expect(adv15.fill_o2).to eq(4)
   end
 end
