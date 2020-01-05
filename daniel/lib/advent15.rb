@@ -27,13 +27,13 @@ class Advent15
 
   def gets
     # First, try going in a direction we don't know yet.
-    # If all are known, backtrack by reversing the previous move in movelist.
-    MOVES.keys.shuffle.each do |dir|
-      return @move_dir = dir if @known_world[@coords + MOVES[dir]].nil?
+    # If all are known, backtrack by reversing the previous move in @movelist.
+    MOVES.keys.each do |dir|
+      return p(@move_dir = dir) if @known_world[@coords + MOVES[dir]].nil?
     end
     @backtracking = true
-    @move_dir =
-      @movelist.empty? ? nil : INV_MOVES[ORIGIN - MOVES[@movelist.pop]]
+    p(@move_dir =
+        @movelist.empty? ? nil : INV_MOVES[ORIGIN - MOVES[@movelist.pop]])
   end
 
   def simulate(interactions)
@@ -47,6 +47,9 @@ class Advent15
   MOVED_AND_ARRIVED = 2
 
   def puts(status)
+    p status
+    raise 'status should never be nil' if status.nil?
+
     new_coords = @coords + MOVES[@move_dir]
     @known_world[new_coords] = status
     return if status == HIT_WALL

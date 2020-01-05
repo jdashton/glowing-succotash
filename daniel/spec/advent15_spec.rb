@@ -30,10 +30,31 @@ EX4_STEPS = EX3_STEPS + [WEST, MOVE,
                          SOUTH, MOVE,
                          SOUTH, WALL,
                          WEST, OXYGEN]
-EX4_WORLD = EX3_WORLD.merge(Vector[-1, 0]  => 0,
-                            Vector[0, -1]  => 1,
-                            Vector[0, -2]  => 0,
-                            Vector[-1, -1] => 2)
+EX4_WORLD = EX3_WORLD.merge(Vector[-1, 0]  => WALL,
+                            Vector[0, -1]  => MOVE,
+                            Vector[0, -2]  => WALL,
+                            Vector[-1, -1] => OXYGEN)
+FULL_WORLD = EX4_WORLD.merge(Vector[-1, -2] => WALL,
+                             Vector[-2, -2] => WALL,
+                             Vector[-2, -1] => MOVE,
+                             Vector[-3, -1] => WALL,
+                             Vector[-2, 0]  => MOVE,
+                             Vector[-3, 0]  => WALL,
+                             Vector[-1, 1]  => MOVE,
+                             Vector[-2, 1]  => MOVE,
+                             Vector[-3, 1]  => WALL,
+                             Vector[-1, 2]  => WALL,
+                             Vector[-2, 2]  => WALL)
+TINY_WORLD = { Vector[-1, 0] => WALL,
+               Vector[0, 1]  => WALL,
+               Vector[1, 0]  => WALL,
+               Vector[0, -1] => WALL,
+               Vector[0, 0]  => MOVE }.freeze
+#  ##
+# #..##
+# #.#+.#
+# #.O.#
+#  ###
 
 SIMULATIONS = {
   EX1_STEPS => EX1_WORLD,
@@ -65,5 +86,25 @@ describe Advent15 do
       req = EX4_WORLD[adv15.coords + MOVES[adv15.gets]]
     ) until req == 2
     expect(adv15.oxygen_num_moves).to eq(2)
+  end
+
+  it 'discovers the entire room' do
+    loop do
+      p(req = adv15.gets)
+      break if req.nil?
+
+      adv15.puts(FULL_WORLD[adv15.coords + MOVES[req]])
+      p adv15.known_world
+    end
+    expect(adv15.known_world).to eq(FULL_WORLD)
+  end
+
+  it 'can detect when no moves are left' do
+    loop do
+      break if adv15.gets.nil?
+
+      adv15.puts 0
+    end
+    expect(adv15.known_world).to eq(TINY_WORLD)
   end
 end
