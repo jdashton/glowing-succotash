@@ -46,6 +46,12 @@ LONGER = {
   '69317163492948606335995924319873' => '52432133'
 }.freeze
 
+WITH_REPEATS = {
+  '03036732577212944063491565474664' => '84462026',
+  '02935109699940807407585447034323' => '78725270',
+  '03081770884921959731165446850517' => '53553731'
+}.freeze
+
 describe Advent16 do
   subject(:adv16) { described_class.new(INPUT_SIGNAL) }
 
@@ -87,6 +93,16 @@ describe Advent16 do
     expect(adv16.calc(IS_LENGTH - 8)).to eq(4)
   end
 
+  it 'calculates only the last two chars if asked' do
+    adv16.calc_full_phase(6)
+    adv16.reset
+    expect(adv16.i_s).to eq([nil, nil, nil, nil, nil, nil, 5, 8])
+  end
+
+  it 'calculates only the last two chars over 4 phases if asked' do
+    expect(adv16.run(4, 6)).to eq([nil, nil, nil, nil, nil, nil, 9, 8])
+  end
+
   it 'finds the expected output after each of four phases' do
     aggregate_failures do
       OUTPUTS.each do |_, v|
@@ -103,6 +119,14 @@ describe Advent16 do
     aggregate_failures do
       LONGER.each do |i_s, f_e|
         expect(described_class.new(swiz(i_s)).run[0..7]).to eq(swiz(f_e))
+      end
+    end
+  end
+
+  it 'gets expected results for 10k examples' do
+    aggregate_failures do
+      WITH_REPEATS.each do |i_s, f_e|
+        expect(described_class.new(swiz(i_s) * 10_000).run10k).to eq(swiz(f_e))
       end
     end
   end

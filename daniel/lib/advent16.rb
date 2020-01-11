@@ -4,6 +4,8 @@ require 'matrix'
 
 # Maze traversal for Intcode-controlled repair droid
 class Advent16
+  attr_reader :i_s
+
   def initialize(input_signal)
     @i_s = input_signal
     @is_len = @i_s.length
@@ -48,26 +50,32 @@ class Advent16
     return @next_buffer[idx] if @next_buffer[idx]
 
     @next_buffer[idx] =
-      if idx >= @third
-        pr = add_prev(idx)
-        pr -= @i_s[idx * 2 + 1] + (@i_s[idx * 2 + 2] || 0) if idx < @half
-        pr % 10
+      if idx >= @half
+        (@i_s[idx] + calc(idx + 1)) % 10
+      elsif idx >= @third
+        (@i_s[idx] + calc(idx + 1) - @i_s[idx * 2 + 1] - (@i_s[idx * 2 + 2] || 0)) % 10
       else
         apply_pat(idx)
       end
   end
 
-  def calc_full_phase
-    (@is_len - 1).downto(0) do |idx|
+  def calc_full_phase(start = 0)
+    (@is_len - 1).downto(start) do |idx|
       calc(idx)
     end
   end
 
-  def run(num_phases = 100)
+  def run(num_phases = 100, target = 0)
     num_phases.times do
-      calc_full_phase
+      calc_full_phase(target)
       reset
     end
     @i_s
+  end
+
+  def run10k
+    target = @i_s[0, 7].join.to_i
+    run(100, target)
+    @i_s[target, 8]
   end
 end

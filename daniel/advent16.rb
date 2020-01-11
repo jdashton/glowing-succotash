@@ -9,4 +9,5 @@ def swiz(str)
 end
 
 # adv16 = Advent16.new
-p Advent16.new(swiz(input)).run[0..7].join
+# p Advent16.new(swiz(input)).run[0..7].join
+p Advent16.new(swiz(input) * 10_000).run10k.join
