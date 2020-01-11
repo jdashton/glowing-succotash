@@ -68,7 +68,8 @@ describe Advent16 do
   end
 
   it 'calculates only the last two chars over 4 phases if asked' do
-    expect(adv16.run(4, 6)).to eq([nil, nil, nil, nil, nil, nil, 9, 8])
+    adv16.target = 6
+    expect(adv16.run(4)).to eq([nil, nil, nil, nil, nil, nil, 9, 8])
   end
 
   it 'finds the expected output after each of four phases' do

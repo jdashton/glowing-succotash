@@ -5,6 +5,7 @@ require 'matrix'
 # Maze traversal for Intcode-controlled repair droid
 class Advent16
   attr_reader :i_s
+  attr_writer :target
 
   def initialize(input_signal)
     @i_s = input_signal
@@ -12,6 +13,7 @@ class Advent16
     @half = @is_len / 2
     @third = @is_len / 3
     @pats = {}
+    @target = 0
     reset(true)
   end
 
@@ -67,17 +69,17 @@ class Advent16
     end
   end
 
-  def run(num_phases = 100, target = 0)
+  def run(num_phases = 100)
     num_phases.times do
-      calc_full_phase(target)
+      calc_full_phase(@target)
       reset
     end
     @i_s
   end
 
   def run10k
-    target = @i_s[0, 7].join.to_i
-    run(100, target)
-    @i_s[target, 8]
+    @target = @i_s[0, 7].join.to_i
+    run
+    @i_s[@target, 8]
   end
 end
