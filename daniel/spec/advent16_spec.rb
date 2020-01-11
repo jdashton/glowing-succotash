@@ -61,38 +61,6 @@ describe Advent16 do
     end
   end
 
-  it 'calculates the last digit' do
-    expect(adv16.calc(IS_LENGTH - 1)).to eq(8)
-  end
-
-  it 'calculates the penultimate digit' do
-    expect(adv16.calc(IS_LENGTH - 2)).to eq(5)
-  end
-
-  it 'calculates the third-to-last digit' do
-    expect(adv16.calc(IS_LENGTH - 3)).to eq(1)
-  end
-
-  it 'calculates the fourth-to-last digit' do
-    expect(adv16.calc(IS_LENGTH - 4)).to eq(6)
-  end
-
-  it 'calculates the fifth-to-last digit' do
-    expect(adv16.calc(IS_LENGTH - 5)).to eq(2)
-  end
-
-  it 'calculates the sixth-to-last digit' do
-    expect(adv16.calc(IS_LENGTH - 6)).to eq(2)
-  end
-
-  it 'calculates the seventh-to-last digit' do
-    expect(adv16.calc(IS_LENGTH - 7)).to eq(8)
-  end
-
-  it 'calculates the eighth-to-last digit' do
-    expect(adv16.calc(IS_LENGTH - 8)).to eq(4)
-  end
-
   it 'calculates only the last two chars if asked' do
     adv16.calc_full_phase(6)
     adv16.reset
