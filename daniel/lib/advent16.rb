@@ -58,14 +58,14 @@ class Advent16
   end
 
   def calc_full_phase(start = 0)
-    if start >= @half
-      (@is_len - 2).downto(start) do |idx|
-        @next_buffer[idx] = (@i_s[idx] + @next_buffer[idx + 1]) % 10
-      end
-    else
-      (@is_len - 2).downto(start) do |idx|
-        @next_buffer[idx] = calc(idx)
-      end
+    stop = [start, @half].max
+    (@is_len - 2).downto(stop) do |idx|
+      @next_buffer[idx] = (@i_s[idx] + @next_buffer[idx + 1]) % 10
+    end
+    return if start >= @half
+
+    (@half - 1).downto(start) do |idx|
+      @next_buffer[idx] = calc(idx)
     end
   end
 
