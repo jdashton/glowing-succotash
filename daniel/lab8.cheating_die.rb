@@ -15,7 +15,8 @@ class Die
   end
 
   def face=(num)
-    raise "impossible value" unless (1..6) === num
+    raise 'impossible value' unless (1..6).cover? num
+
     @number_showing = num
   end
 end
