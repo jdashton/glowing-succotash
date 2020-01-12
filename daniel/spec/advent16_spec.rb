@@ -5,28 +5,28 @@ require 'advent16'
 
 P = {
   0 => {
-    add: [0, 4, 8, 12, 16],
-    sub: [2, 6, 10, 14, 18]
+    add: [0...1, 4...5, 8...9, 12...13, 16...17],
+    sub: [2...3, 6...7, 10...11, 14...15, 18...]
   },
   1 => {
-    add: [1, 2, 9, 10, 17, 18],
-    sub: [5, 6, 13, 14]
+    add: [1...3, 9...11, 17...],
+    sub: [5...7, 13...15]
   },
   2 => {
-    add: [2, 3, 4, 14, 15, 16],
-    sub: [8, 9, 10]
+    add: [2...5, 14...17],
+    sub: [8...11]
   },
   3 => {
-    add: [3, 4, 5, 6],
-    sub: [11, 12, 13, 14]
+    add: [3...7],
+    sub: [11...15]
   },
   4 => {
-    add: [4, 5, 6, 7, 8],
-    sub: [14, 15, 16, 17, 18]
+    add: [4...9],
+    sub: [14...]
   },
   5 => {
-    add: [5, 6, 7, 8, 9, 10],
-    sub: [17, 18]
+    add: [5...11],
+    sub: [17...]
   }
 }.freeze
 
@@ -62,7 +62,8 @@ describe Advent16 do
   end
 
   it 'calculates only the last two chars if asked' do
-    adv16.calc_full_phase(6)
+    adv16.target = 6
+    adv16.calc_full_phase
     adv16.reset
     expect(adv16.i_s).to eq([nil, nil, nil, nil, nil, nil, 5, 8])
   end
