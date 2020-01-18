@@ -27,9 +27,9 @@ end
 input = <<~DOC_END
   165432-707912
 DOC_END
-        .lines
-        .map { |l| l.split('-').map(&:to_i) }
-        .flatten
+          .lines
+          .map { |l| l.split('-').map(&:to_i) }
+          .flatten
 
 p input
 adv4 = Advent04.new

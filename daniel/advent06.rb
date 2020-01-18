@@ -1762,8 +1762,8 @@ input = <<~DOC_END
   HX8)F4H
   9LP)JXB
 DOC_END
-        .lines
-        .map(&:chomp)
+          .lines
+          .map(&:chomp)
 
 adv6 = Advent06.new(input)
 puts adv6.count_orbits

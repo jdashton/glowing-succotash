@@ -12,6 +12,6 @@ SPACE = ' '
 BLOCK = "\u2588"
 
 pictogram.chars.each_slice(Advent08::WIDTH) do |line|
-  line.each { |c|    print c == ?1 ? BLOCK : SPACE }
+  line.each { |c| print c == ?1 ? BLOCK : SPACE }
   puts
 end
