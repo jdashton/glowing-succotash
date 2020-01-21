@@ -1,29 +1,49 @@
 # frozen_string_literal: true
 
-def talk(animal_type, name)
-  print "#{ name } says "
-  puts case animal_type
-       when 'bird' then 'Chirp! Chirp!'
-       when 'dog'  then 'Bark!'
-       when 'cat'  then 'Meow!'
-       end
+# Avians
+class Bird
+  def talk(name)
+    puts "#{ name } says Chirp! Chirp!"
+  end
+
+  def move(name, destination)
+    puts "#{ name } flies to the #{ destination }."
+  end
 end
 
-def move(animal_type, name, destination)
-  print "#{ name } "
-  print case animal_type
-        when 'bird' then 'flies'
-        when 'dog', 'cat' then 'runs'
-        end
-  puts " to the #{ destination }."
+# Canines
+class Dog
+  attr_accessor :name, :age
+
+  def report_age
+    puts "#{ @name } is #{ @age } years old."
+  end
+
+  def talk
+    puts "#{ @name } says Bark!"
+  end
+
+  def move(destination)
+    puts "#{ @name } runs to the #{ destination }."
+  end
 end
 
-def report_age(name, age)
-  puts "#{ name } is #{ age } years old."
+# Felines
+class Cat
+  def talk(name)
+    puts "#{ name } says Meow!"
+  end
+
+  def move(name, destination)
+    puts "#{ name } runs to the #{ destination }."
+  end
 end
 
-move('bird', 'Whistler', 'tree')
-talk('dog', 'Sadie')
-talk('bird', 'Whistler')
-move('cat', 'Smudge', 'house')
-report_age('Smudge', 6)
+fido = Dog.new
+fido.name = 'Fido'
+fido.age = 2
+rex = Dog.new
+rex.name = 'Rex'
+rex.age = 3
+fido.report_age
+rex.report_age
