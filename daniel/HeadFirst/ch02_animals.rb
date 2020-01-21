@@ -13,10 +13,18 @@ end
 
 # Canines
 class Dog
-  attr_accessor :name, :age
+  attr_reader :name, :age
 
-  def report_age
-    puts "#{ @name } is #{ @age } years old."
+  def name=(value)
+    raise 'Name can\'t be blank!' if value.empty?
+
+    @name = value
+  end
+
+  def age=(value)
+    raise "An age of #{ value } isn't valid!" if value.negative?
+
+    @age = value
   end
 
   def talk
@@ -25,6 +33,10 @@ class Dog
 
   def move(destination)
     puts "#{ @name } runs to the #{ destination }."
+  end
+
+  def report_age
+    puts "#{ @name } is #{ @age } years old."
   end
 end
 
@@ -39,11 +51,9 @@ class Cat
   end
 end
 
-fido = Dog.new
-fido.name = 'Fido'
-fido.age = 2
-rex = Dog.new
-rex.name = 'Rex'
-rex.age = 3
-fido.report_age
-rex.report_age
+dog = Dog.new
+dog.name = 'Daisy'
+dog.age = 3
+dog.report_age
+dog.talk
+dog.move 'bed'
