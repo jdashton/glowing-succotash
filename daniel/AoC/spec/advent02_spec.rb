@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require_relative '../advent02'
+require 'advent02'
 
 describe Advent02 do
   subject(:adv02) { described_class.new }
