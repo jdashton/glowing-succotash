@@ -13,28 +13,30 @@
 require 'spec_helper'
 require_relative '../advent01'
 
-describe Advent1 do
+describe Advent01 do
+  let(:adv01) { described_class.new }
+
   it 'gets 2 for 12' do
-    expect(subject.fuel(12)).to eq 2
+    expect(adv01.fuel(12)).to eq 2
   end
 
   it 'gets 2 for 14' do
-    expect(subject.fuel(14)).to eq 2
+    expect(adv01.fuel(14)).to eq 2
   end
 
   it 'gets 654 for 1969' do
-    expect(subject.fuel(1969)).to eq 966
+    expect(adv01.fuel(1969)).to eq 966
   end
 
   it 'gets 33583 for 100756' do
-    expect(subject.fuel(100_756)).to eq 50_346
+    expect(adv01.fuel(100_756)).to eq 50_346
   end
 
   it 'sums two modules requirements' do
-    expect(subject.total_fuel([12, 14])).to eq 4
+    expect(adv01.total_fuel([12, 14])).to eq 4
   end
 
   it 'sums four modules requirements' do
-    expect(subject.total_fuel([12, 14, 1969, 100_756])).to eq(4 + 966 + 50_346)
+    expect(adv01.total_fuel([12, 14, 1969, 100_756])).to eq(4 + 966 + 50_346)
   end
 end

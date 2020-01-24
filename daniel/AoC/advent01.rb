@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Defines module fuel requirements
-class Advent1
+class Advent01
   # to find the fuel required for a module, take its mass, divide by three,
   # round down, and subtract 2.
   def fuel(mass)
@@ -117,5 +117,5 @@ INPUT = <<~DOC_END
   130153
 DOC_END
 
-adv1 = Advent1.new
+adv1 = Advent01.new
 puts adv1.total_fuel(INPUT.lines.map(&:to_i))
