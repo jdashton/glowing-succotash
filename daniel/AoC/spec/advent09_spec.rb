@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'Advent09'
+require 'advent09'
 require 'tracer'
 
 describe Advent09 do
