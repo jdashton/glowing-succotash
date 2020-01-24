@@ -11,7 +11,7 @@
 # round down, and subtract 2.
 
 require 'spec_helper'
-require_relative '../advent01'
+require 'advent01'
 
 describe Advent01 do
   let(:adv01) { described_class.new }
