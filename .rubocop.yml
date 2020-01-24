@@ -26,4 +26,4 @@ Style/MultilineBlockChain:
   Enabled: false
 
 Naming/MethodParameterName:
-  AllowedNames: [x, y]
+  AllowedNames: [x, y, p, i, op]
