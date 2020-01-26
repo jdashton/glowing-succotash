@@ -42,3 +42,19 @@ end
 truck = Truck.new
 truck.load_bed('259 bouncy balls')
 puts "The truck is carrying #{ truck.cargo }."
+
+truck.odometer = 11_432
+truck.gas_used = 366
+puts 'Average MPG:'
+puts truck.mileage
+
+car = Car.new
+puts
+puts 'Instance variables before calling accessors:'
+puts car.instance_variables
+
+car.odometer = 22_914
+car.gas_used = 728
+puts
+puts 'Instance variables after calling accessors:'
+puts car.instance_variables
