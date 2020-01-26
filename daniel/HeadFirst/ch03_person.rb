@@ -9,6 +9,18 @@ class Person
   def name
     @storage
   end
+
+  def greeting_by_name(name)
+    "Hello, #{ name }!"
+  end
+end
+
+# Friend
+class Friend < Person
+  def greeting_by_name(name)
+    basic_greeting = super
+    "#{ basic_greeting } Glad to see you!"
+  end
 end
 
 # Employee
