@@ -23,14 +23,17 @@ end
 
 # Square
 class Square < Rectangle
+  alias_method :super_height=, :height=
+  alias_method :super_width=, :width=
+
   def width=(val)
     super
-    self.height = val unless (defined? @height) && @height == val
+    self.super_height = val
   end
 
   def height=(val)
     super
-    self.width = val unless (defined? @width) && @width == val
+    self.super_width = val
   end
 end
 
