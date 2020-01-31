@@ -23,8 +23,8 @@ end
 
 # Square
 class Square < Rectangle
-  alias_method :super_height=, :height=
-  alias_method :super_width=, :width=
+  alias super_height= height=
+  alias super_width= width=
 
   def width=(val)
     super
