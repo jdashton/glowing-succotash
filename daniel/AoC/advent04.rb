@@ -24,17 +24,19 @@ class Advent04
   end
 end
 
-input = <<~DOC_END
-  165432-707912
-DOC_END
-          .lines
-          .map { |l| l.split('-').map(&:to_i) }
-          .flatten
+if $PROGRAM_NAME == __FILE__
+  input = <<~DOC_END
+    165432-707912
+  DOC_END
+            .lines
+            .map { |l| l.split('-').map(&:to_i) }
+            .flatten
 
-p input
-adv4 = Advent04.new
-tally = 0
-(input[0]..input[1]).each do |i|
-  tally += 1 if adv4.meets_criteria?(i)
+  p input
+  adv4 = Advent04.new
+  tally = 0
+  (input[0]..input[1]).each do |i|
+    tally += 1 if adv4.meets_criteria?(i)
+  end
+  puts tally
 end
-puts tally
