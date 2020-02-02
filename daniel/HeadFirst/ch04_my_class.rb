@@ -2,16 +2,10 @@
 
 # MyClass
 class MyClass
-  def first_method
-    puts "Current instance within first_method: #{ self }"
-    second_method
-  end
-
-  def second_method
-    puts "Current instance within second_method: #{ self }"
+  def self.my_class_method(par1, par2)
+    puts 'Hello from MyClass!'
+    puts "My parameters: #{ par1 }, #{ par2 }"
   end
 end
 
-my_object = MyClass.new
-puts "my_object refers to this object: #{ my_object }"
-my_object.first_method
+MyClass.my_class_method('my p1 val', 'my p2 val')

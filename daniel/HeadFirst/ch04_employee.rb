@@ -71,17 +71,33 @@ class HourlyEmployee < Employee
     self.hourly_wage = wage
     self.hours_per_week = hours
   end
+
+  def self.security_guard(name)
+    HourlyEmployee.new(name, 19.25, 30)
+  end
+
+  def self.cashier(name)
+    HourlyEmployee.new(name, 12.75, 25)
+  end
+
+  def self.janitor(name)
+    HourlyEmployee.new(name, 10.50, 20)
+  end
 end
 
 SalariedEmployee.new('Amy Blake', 50_000).print_pay_stub
 
-ivan    = HourlyEmployee.new('Ivan Stokes',     12.75, 25)
-harold  = HourlyEmployee.new('Harold Nguyen',   12.75, 25)
-tamara  = HourlyEmployee.new('Tamara Wells',    12.75, 25)
-susie   = HourlyEmployee.new('Susie Powell',    12.75, 25)
+ivan    = HourlyEmployee.cashier('Ivan Stokes')
+harold  = HourlyEmployee.cashier('Harold Nguyen')
+tamara  = HourlyEmployee.cashier('Tamara Wells')
+susie   = HourlyEmployee.cashier('Susie Powell')
 
-edwin   = HourlyEmployee.new('Edwin Burgess',   10.50, 20)
-ethel   = HourlyEmployee.new('Ethel Harris',    10.50, 20)
+edwin   = HourlyEmployee.janitor('Edwin Burgess')
+ethel   = HourlyEmployee.janitor('Ethel Harris')
 
-angela  = HourlyEmployee.new('Angela Matthews', 19.25, 30)
-stewart = HourlyEmployee.new('Stewart Sanchez', 19.25, 30)
+angela  = HourlyEmployee.security_guard('Angela Matthews')
+stewart = HourlyEmployee.security_guard('Stewart Sanchez')
+
+angela.print_pay_stub
+edwin.print_pay_stub
+ivan.print_pay_stub
