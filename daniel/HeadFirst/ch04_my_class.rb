@@ -2,9 +2,16 @@
 
 # MyClass
 class MyClass
-  def initialize(my_param)
-    puts 'Got a parameter from \'new\': %s ' % my_param
+  def first_method
+    puts "Current instance within first_method: #{ self }"
+    second_method
+  end
+
+  def second_method
+    puts "Current instance within second_method: #{ self }"
   end
 end
 
-MyClass.new('hello')
+my_object = MyClass.new
+puts "my_object refers to this object: #{ my_object }"
+my_object.first_method
