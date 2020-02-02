@@ -16,7 +16,7 @@ class Rectangle
     @height = val
   end
 
-  def initialize(width:, height:)
+  def initialize(width, height)
     self.width = width
     self.height = height
   end
@@ -26,5 +26,5 @@ class Rectangle
   end
 end
 
-rectangle = Rectangle.new(width: 2, height: 4)
+rectangle = Rectangle.new(2, 4)
 puts rectangle.area
