@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-lines = []
-File.open('votes.txt') do |file|
-  lines = file.readlines
+lines = File.read('votes.txt').lines.map(&:chomp).map(&:upcase)
+
+votes = lines.reduce(Hash.new(0)) do |vs, line|
+  vs.merge(line => vs[line] + 1)
 end
 
-votes = Hash.new(0)
-
-lines.each do |line|
-  name = line.chomp
-  votes[name] += 1
+votes.each do |name, count|
+  puts "#{ name }: #{ count }"
 end
-
-pp votes
