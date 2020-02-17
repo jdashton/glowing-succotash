@@ -1,9 +1,9 @@
-staff = ['Walsh', 'Moreno', 'Nash', 'Cox',
-         'Rios', 'Jones', 'Gupta', 'Hayes']
+staff = %w[Walsh Moreno Nash Cox
+           Rios Jones Gupta Hayes]
 softball_team = Marshal.load(Marshal.dump(staff))
 
 staff << 'Wagner'
-softball_team << "Zonky the Wonder Squirrel"
+softball_team << 'Zonky the Wonder Squirrel'
 
 staff[0] << '!!'
 
