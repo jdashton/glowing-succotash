@@ -1,5 +1,3 @@
-require 'time'
-
 # Today is Thursday, April 14, 2016
 
 puts Time.now.strftime('Today is %A, %B %e, %Y')
