@@ -4,9 +4,9 @@ require 'minitest/autorun'
 
 class TestArray < Minitest::Test
   def setup
-    @array = ['a', 'b', 'c']
+    @array = %w[a b c]
   end
-  
+
   def test_length
     assert_equal(3, @array.length)
   end

@@ -2,6 +2,7 @@
 require:
   - rubocop-performance
   - rubocop-rspec
+  - rubocop-minitest
 
 Metrics/BlockLength:
   ExcludedMethods: ['context', 'describe', 'before']
