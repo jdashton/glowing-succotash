@@ -1,3 +1,4 @@
+# A class we can test
 class Person
   attr_accessor :name
 
