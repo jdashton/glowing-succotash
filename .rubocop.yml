@@ -33,7 +33,7 @@ Style/MultilineBlockChain:
   Enabled: false
 
 Naming/MethodParameterName:
-  AllowedNames: [x, y, p, i, n, op]
+  AllowedNames: [x, y, p, i, n, op, id]
 
 Style/HashEachMethods:
   Enabled: true
