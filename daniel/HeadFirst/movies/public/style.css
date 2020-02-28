@@ -1,0 +1,17 @@
+
+label {
+  width: 7em;
+}
+
+input {
+  margin: 0.2em;
+}
+
+li {
+  display: flex;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
