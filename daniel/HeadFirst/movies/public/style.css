@@ -11,6 +11,14 @@ li {
   display: flex;
 }
 
+li .label {
+  width: 7em;
+}
+
+li .data {
+  width: 7em;
+}
+
 ul {
   list-style: none;
   padding: 0;
