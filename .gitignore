@@ -10,6 +10,7 @@
 /test/version_tmp/
 /tmp/
 doc/
+pragstudio-elixir-code/
 
 # Used by dotenv library to load environment variables.
 # .env
