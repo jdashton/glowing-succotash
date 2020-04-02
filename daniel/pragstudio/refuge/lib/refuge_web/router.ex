@@ -17,6 +17,8 @@ defmodule RefugeWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    resources "/bears", BearController
   end
 
   # Other scopes may use custom stacks.
