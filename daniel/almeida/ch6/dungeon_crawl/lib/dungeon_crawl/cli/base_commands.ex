@@ -17,7 +17,9 @@ defmodule DungeonCrawl.CLI.BaseCommands do
   end
 
   def parse_answer(answer) do
-    {option, _} = Integer.parse(answer)
-    option - 1
+    case Integer.parse(answer) do
+      {option, _} -> option - 1
+      _ -> 0
+    end
   end
 end
