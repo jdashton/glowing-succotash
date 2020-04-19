@@ -1,11 +1,10 @@
 defmodule Shop do
-  def checkout(price) do
-    try do
-      {quantity, _} = ask_number("Quantity? ")
-      {price, _} = ask_number("Price? ")
+  def checkout() do
+    with {quantity, _} <- ask_number("Quantity?"),
+         {price, _} <- ask_number("Price?") do
       quantity * price
-    rescue
-      MatchError -> "It's not a number"
+    else
+      :error -> IO.puts("It's not a number")
     end
   end
 
