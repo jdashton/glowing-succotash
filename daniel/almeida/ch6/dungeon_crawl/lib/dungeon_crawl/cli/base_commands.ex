@@ -1,5 +1,6 @@
 defmodule DungeonCrawl.CLI.BaseCommands do
   alias Mix.Shell.IO, as: Shell
+  @invalid_option {:error, "Invalid option"}
 
   def display_options(options) do
     options
@@ -18,8 +19,8 @@ defmodule DungeonCrawl.CLI.BaseCommands do
 
   def parse_answer(answer) do
     case Integer.parse(answer) do
+      :error -> throw(@invalid_option)
       {option, _} -> option - 1
-      _ -> 0
     end
   end
 
@@ -34,7 +35,7 @@ defmodule DungeonCrawl.CLI.BaseCommands do
   end
 
   def find_option_by_index!(index, options) do
-    Enum.at(options, index) || raise DungeonCrawl.CLI.InvalidOptionError
+    Enum.at(options, index) || throw(@invalid_option)
   end
 
   def ask_for_index(options) do
@@ -63,23 +64,21 @@ defmodule DungeonCrawl.CLI.BaseCommands do
   end
 
   def ask_for_option(options) do
-    try do
-      options
-      |> display_options()
-      |> generate_question
-      |> Shell.prompt
-      |> parse_answer!
-      |> find_option_by_index!(options)
-    rescue
-      e in DungeonCrawl.CLI.InvalidOptionError ->
-        display_error(e)
-        ask_for_option(options)
-    end
+    options
+    |> display_options()
+    |> generate_question
+    |> Shell.prompt()
+    |> parse_answer!
+    |> find_option_by_index!(options)
+  catch
+    {:error, message} ->
+      display_error(message)
+      ask_for_option(options)
   end
 
-  def display_error(e) do
+  def display_error(message) do
     Shell.cmd("clear")
-    Shell.error(e.message)
+    Shell.error(message)
     Shell.prompt("Press Enter to try again.")
     Shell.cmd("clear")
   end
