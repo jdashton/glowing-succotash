@@ -1,5 +1,9 @@
 defmodule DungeonCrawl.CLI.BaseCommands do
+  use Monad.Operators
+
   alias Mix.Shell.IO, as: Shell
+  import Monad.Result, only: [success: 1, success?: 1, error: 1, return: 1]
+
   @invalid_option {:error, "Invalid option"}
 
   def display_options(options) do
@@ -9,7 +13,7 @@ defmodule DungeonCrawl.CLI.BaseCommands do
       Shell.info("#{index} - #{option}")
     end)
 
-    options
+    return(options)
   end
 
   def generate_question(options) do
@@ -19,8 +23,8 @@ defmodule DungeonCrawl.CLI.BaseCommands do
 
   def parse_answer(answer) do
     case Integer.parse(answer) do
-      :error -> throw(@invalid_option)
-      {option, _} -> option - 1
+      :error -> error("Invalid option")
+      {option, _} -> success(option - 1)
     end
   end
 
@@ -34,8 +38,11 @@ defmodule DungeonCrawl.CLI.BaseCommands do
     end
   end
 
-  def find_option_by_index!(index, options) do
-    Enum.at(options, index) || throw(@invalid_option)
+  def find_option_by_index(index, options) do
+    case Enum.at(options, index) do
+      nil -> error("Invalid option")
+      chosen_option -> success(chosen_option)
+    end
   end
 
   def ask_for_index(options) do
@@ -64,16 +71,20 @@ defmodule DungeonCrawl.CLI.BaseCommands do
   end
 
   def ask_for_option(options) do
-    options
-    |> display_options()
-    |> generate_question
-    |> Shell.prompt()
-    |> parse_answer!
-    |> find_option_by_index!(options)
-  catch
-    {:error, message} ->
-      display_error(message)
+    result =
+      return(options)
+      ~>> (&display_options/1)
+      ~>> (&generate_question/1)
+      ~>> (&Shell.prompt/1)
+      ~>> (&parse_answer/1)
+      ~>> (&find_option_by_index(&1, options))
+
+    if success?(result) do
+      result.value
+    else
+      display_error(result.error)
       ask_for_option(options)
+    end
   end
 
   def display_error(message) do
