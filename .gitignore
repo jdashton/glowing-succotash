@@ -11,6 +11,7 @@
 /tmp/
 doc/
 pragstudio-elixir-code/
+dialyzer_manifest*
 
 # Used by dotenv library to load environment variables.
 # .env
