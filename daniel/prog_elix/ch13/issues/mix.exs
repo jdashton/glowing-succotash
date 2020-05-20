@@ -4,11 +4,18 @@ defmodule Issues.MixProject do
   def project do
     [
       app: :issues,
-      escript: escript_config(),
       version: "0.1.0",
       name: "Issues",
+      escript: escript_config(),
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.details": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
       deps: deps()
     ]
   end
@@ -23,9 +30,10 @@ defmodule Issues.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      { :httpoison, "~> 1.6"  },
-      { :poison,    "~> 4.0"  },
-      { :ex_doc,    "~> 0.22" }
+      { :httpoison,   "~> 1.6"  },
+      { :poison,      "~> 4.0"  },
+      { :ex_doc,      "~> 0.22" },
+      { :excoveralls, "~> 0.12.3", only: :test }
     ]
   end
 
