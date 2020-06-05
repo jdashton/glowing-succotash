@@ -1,24 +1,20 @@
 defmodule Stack.Server do
   use GenServer
 
-  @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
-  def start_link(initial_stack) do
-    GenServer.start_link(__MODULE__, initial_stack, name: :frog)
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, nil, name: :frog)
   end
 
-  @spec pop :: any
   def pop do
     GenServer.call(:frog, :pop)
   end
 
-  @spec push(any) :: :ok
   def push(new_val) do
     GenServer.cast(:frog, { :push, new_val })
   end
 
-  @spec init(any) :: {:ok, any}
-  def init(initial_stack) do
-    { :ok, initial_stack }
+  def init(_) do
+    { :ok, Stack.Stash.get() }
   end
 
   def handle_call(:pop, _from, [ first | rest ]) do
@@ -34,6 +30,7 @@ defmodule Stack.Server do
   end
 
   def terminate(reason, state) do
+    Stack.Stash.update(state)
     IO.puts "Terminating because #{inspect reason} with state #{inspect state}."
   end
 end
