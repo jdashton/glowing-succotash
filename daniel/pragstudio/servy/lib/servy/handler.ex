@@ -19,13 +19,13 @@ defmodule Servy.Handler do
     |> log
     |> route
     |> track
-    |> emojify
+    # |> emojify
     |> format_response
   end
 
 
   def route(%Conv{ method: "GET", path: "/wildthings" } = conv) do
-    %{ conv | status: 200, resp_body: "Bears, Liöns, Tigers" }
+    %{ conv | status: 200, resp_body: "Bears, Lions, Tigers" }
   end
 
   def route(%Conv{ method: "GET", path: "/bears" } = conv) do
@@ -83,26 +83,15 @@ defmodule Servy.Handler do
 
   def format_response(%Conv{} = conv) do
     """
-    HTTP/1.1 #{ Conv.full_status(conv) }
-    Content-Type: text/html
-    Content-Length: #{ byte_size(conv.resp_body) }
-
+    HTTP/1.1 #{ Conv.full_status(conv) }\r
+    Content-Type: text/html\r
+    Content-Length: #{ byte_size(conv.resp_body) }\r
+    \r
     #{ conv.resp_body }
     """
   end
 end
 
-# request = """
-# GET /wildthings HTTP/1.1
-# Host: example.com
-# User-Agent: ExampleBrowser/1.0
-# Accept: */*
-
-# """
-
-# response = Servy.Handler.handle(request)
-
-# IO.puts response
 
 # request = """
 # GET /wildlife HTTP/1.1
@@ -116,29 +105,29 @@ end
 
 # IO.puts response
 
-request = """
-GET /bears HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
+# request = """
+# GET /bears HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
 
-"""
+# """
 
-response = Servy.Handler.handle(request)
+# response = Servy.Handler.handle(request)
 
-IO.puts response
+# IO.puts response
 
-request = """
-GET /bears/1 HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
+# request = """
+# GET /bears/1 HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
 
-"""
+# """
 
-response = Servy.Handler.handle(request)
+# response = Servy.Handler.handle(request)
 
-IO.puts response
+# IO.puts response
 
 # request = """
 # GET /bears?id=1 HTTP/1.1
