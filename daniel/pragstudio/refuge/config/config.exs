@@ -13,9 +13,10 @@ config :refuge,
 # Configures the endpoint
 config :refuge, RefugeWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "0C1JKkGzako7eU8rPOCwKhAUTNscTkO6ASn+K+2wp5wnRKVLogQ/+2BEmJrL9F0g",
-  render_errors: [view: RefugeWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Refuge.PubSub, adapter: Phoenix.PubSub.PG2]
+  secret_key_base: "vLrLewE/1wVmCWgoCHczqH8loTwV0CeoigbZ0a4ClO6zvtscpxkmbrjBTouPP767",
+  render_errors: [view: RefugeWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Refuge.PubSub,
+  live_view: [signing_salt: "X0WzxDhc"]
 
 # Configures Elixir's Logger
 config :logger, :console,

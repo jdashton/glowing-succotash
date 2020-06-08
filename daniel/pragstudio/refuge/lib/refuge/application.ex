@@ -6,14 +6,17 @@ defmodule Refuge.Application do
   use Application
 
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
       # Start the Ecto repository
       Refuge.Repo,
-      # Start the endpoint when the application starts
+      # Start the Telemetry supervisor
+      RefugeWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: Refuge.PubSub},
+      # Start the Endpoint (http/https)
       RefugeWeb.Endpoint
-      # Starts a worker by calling: Refuge.Worker.start_link(arg)
-      # {Refuge.Worker, arg},
+      # Start a worker by calling: Refuge.Worker.start_link(arg)
+      # {Refuge.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

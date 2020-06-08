@@ -95,10 +95,10 @@ defmodule Refuge.Wildthings do
   ## Examples
 
       iex> change_bear(bear)
-      %Ecto.Changeset{source: %Bear{}}
+      %Ecto.Changeset{data: %Bear{}}
 
   """
-  def change_bear(%Bear{} = bear) do
-    Bear.changeset(bear, %{})
+  def change_bear(%Bear{} = bear, attrs \\ %{}) do
+    Bear.changeset(bear, attrs)
   end
 end

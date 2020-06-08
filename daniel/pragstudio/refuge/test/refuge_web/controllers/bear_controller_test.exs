@@ -83,6 +83,6 @@ defmodule RefugeWeb.BearControllerTest do
 
   defp create_bear(_) do
     bear = fixture(:bear)
-    {:ok, bear: bear}
+    %{bear: bear}
   end
 end
