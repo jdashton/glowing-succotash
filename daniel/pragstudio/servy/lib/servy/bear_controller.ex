@@ -14,6 +14,7 @@ defmodule Servy.BearController do
       %{ conv | status: 200, resp_body: BearView.index(bears) }
   end
 
+  @spec show(%{resp_body: any, status: any}, map) :: %{resp_body: <<_::64, _::_*8>>, status: 200}
   def show(conv, %{ "id" => id }) do
     bear = Wildthings.get_bear(id)
 
