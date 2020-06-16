@@ -3,10 +3,10 @@ defmodule Stack.Application do
 
   use Application
 
-  def start(_type, _args) do
+  def start(_type, args) do
     children = [
-      {Stack.Stash,  [5, "cat", 9] },
-      {Stack.Server, nil           }
+      {Stack.Stash,  args },
+      {Stack.Server, nil  }
     ]
 
     opts = [strategy: :rest_for_one, name: Stack.Supervisor]
