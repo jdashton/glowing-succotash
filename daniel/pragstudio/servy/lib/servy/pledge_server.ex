@@ -83,15 +83,15 @@ defmodule Servy.PledgeServer do
   end
 end
 
-alias Servy.PledgeServer
+# alias Servy.PledgeServer
 
-{:ok, pid} = PledgeServer.start()
+# {:ok, pid} = PledgeServer.start()
 
-PledgeServer.set_cache_size(4)
+# PledgeServer.set_cache_size(4)
 
-IO.inspect(PledgeServer.create_pledge("larry", 10))
+# IO.inspect(PledgeServer.create_pledge("larry", 10))
 
-send(pid, {:stop, "hammertime"})
+# send(pid, {:stop, "hammertime"})
 
 # PledgeServer.clear()
 
@@ -101,8 +101,8 @@ send(pid, {:stop, "hammertime"})
 
 # IO.inspect(PledgeServer.create_pledge("grace", 50))
 
-IO.inspect(PledgeServer.recent_pledges())
+# IO.inspect(PledgeServer.recent_pledges())
 
-IO.inspect(PledgeServer.total_pledged())
+# IO.inspect(PledgeServer.total_pledged())
 
-IO.inspect(Process.info(pid, :messages))
+# IO.inspect(Process.info(pid, :messages))
